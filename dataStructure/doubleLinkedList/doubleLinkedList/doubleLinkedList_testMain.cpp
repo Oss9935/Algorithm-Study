@@ -3,6 +3,7 @@
 #include <string.h>
 #include <malloc.h>
 #include "doublelinkedlist.h"
+//#include <crtdbg.h>
 
 int menu(char **mList, size_t menuCnt);
 void dataFileLoad(LinkedList *lp); // 데이터 파일내의 데이터를 리스트에 저장 
@@ -45,7 +46,8 @@ int main()
 	}
 	//dataFileSave(&list); // 리스트내의 모든 데이터를 파일에 저장 
 	destroy(&list);
-
+	
+	//_CrtDumpMemoryLeaks();
 	return 0;
 }
 

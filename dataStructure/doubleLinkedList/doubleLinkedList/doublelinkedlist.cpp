@@ -181,12 +181,12 @@ void destroy(LinkedList *lp)
 
 	lp->cur = lp->head->next;
 	while (lp->cur != lp->tail) {
-		lp->head->next = lp->cur->next;
-		lp->cur->next->prev = lp->head;
 		tp = lp->cur;
 		lp->cur = lp->cur->next;
 		free(tp);
 	}
+	free(lp->head);
+	free(lp->tail);
 
 	return;
 }

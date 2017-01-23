@@ -50,8 +50,20 @@ dataPtr - 새 노드에 저장할 데이터 영역의 주소
 --------------------------------------------------------------------------------------*/
 Node * appendFromHead(LinkedList *lp, DataType *dataPtr)
 {
-	/* TO DO */
-	return NULL;
+	lp->cur = (Node *)malloc(sizeof(Node));
+	assert(lp->cur != NULL);
+
+	lp->cur->next = lp->head->next;
+	lp->cur->prev = lp->head;
+
+	lp->head->next->prev = lp->cur;
+	lp->head->next = lp->cur;
+
+
+	lp->cur->data = *dataPtr;
+	lp->length++;
+
+	return lp->cur;
 }
 
 /*--------------------------------------------------------------------------------------
@@ -69,7 +81,7 @@ Node * appendFromTail(LinkedList *lp, DataType *dataPtr)
 	lp->cur->next = lp->tail;
 	
 	lp->tail->prev->next = lp->cur;
-	//lp->cur->prev->next = ''
+	//lp->cur->prev->next = lp->cur;
 	lp->tail->prev = lp->cur;
 	
 	lp->cur->data = *dataPtr;
@@ -121,12 +133,25 @@ Node * searchUnique(LinkedList *lp, DataType *dataPtr, int(*compare)(DataType *,
 searchCnt - 찾은 노드의 개수를 저장할 영역의 주소
 dataPtr - 검색할 데이터가 저장된 영역의 주소
 compare - data영역 비교를 위한 보조함수의 시작주소
-리턴값: 찾은 노드의 주소목록배열의 시작 주소 리턴/없을 시 NULL pointer 리턴
+리턴값: 찾은 노드의 주소목록 배열의 시작 주소 리턴/없을 시 NULL pointer 리턴
 --------------------------------------------------------------------------------------*/
-Node ** searchDuplicate(LinkedList *lp, int *searchCnt, DataType *dataPtr, int(*compare)(DataType *, DataType *)) // dataPtr과 일치하는 노드의 주소를 담고 있는 Node *배열의 시작주소 리턴/없을 시 NULL pointer 리턴
+Node ** searchDuplicate(LinkedList *lp, int *searchCnt, 
+	DataType *dataPtr, int(*compare)(DataType *, DataType *)) 
+	// dataPtr과 일치하는 노드의 주소를 담고 있는 Node *배열의 시작주소 리턴/없을 시 NULL pointer 리턴
 {
-	/* TO DO */
-	return NULL;
+	Node **np = NULL;
+	*searchCnt = 0;
+	lp->cur = lp->head->next;
+	while (lp->cur != lp->tail) {
+		if (compare(&lp->cur->data, dataPtr) == NULL) {
+			np = (Node**)realloc(np, (*searchCnt+1) * sizeof(Node *));
+			np[*searchCnt] = lp->cur;
+			++(*searchCnt);
+		}
+		lp->cur = lp->cur->next;
+	}
+
+	return np;
 }
 
 /*--------------------------------------------------------------------------------------
@@ -152,12 +177,15 @@ void deleteNode(LinkedList *lp, Node *target)
 --------------------------------------------------------------------------------------*/
 void destroy(LinkedList *lp)
 {
+	Node *tp;
+
 	lp->cur = lp->head->next;
 	while (lp->cur != lp->tail) {
-		lp->head = lp->cur->next;
-		lp->cur->prev = lp->head;
-		free(lp->cur);
-		//lp->cur 
+		lp->head->next = lp->cur->next;
+		lp->cur->next->prev = lp->head;
+		tp = lp->cur;
+		lp->cur = lp->cur->next;
+		free(tp);
 	}
 
 	return;

@@ -158,7 +158,7 @@ void mDelete(LinkedList * lp)
 void mDupSearch(LinkedList * lp)
 {
 	Node **searchPtr; // 찾은 노드의 주소들을 저장할 배열의 시작주소를 가리킬 포인터
-	int searchCnt;    // 찾은 노드의 수
+	int searchCnt = 0;    // 찾은 노드의 수
 	DataType sData;
 	int i;
 

@@ -38,6 +38,17 @@ next - 새 노드의 뒷 노드의 주소
 --------------------------------------------------------------------------------------*/
 Node * makeNode(DataType *dataPtr, Node *prev, Node *next)
 {
+	Node *np;
+	np = (Node *)malloc(sizeof(Node));
+	assert(np != NULL);
+
+	np->prev = prev;
+	np->next = next;
+
+	prev->next = np;
+	next->prev = np;
+
+	np->data = *dataPtr;
 
 	return NULL;
 }
@@ -50,6 +61,9 @@ dataPtr - 새 노드에 저장할 데이터 영역의 주소
 --------------------------------------------------------------------------------------*/
 Node * appendFromHead(LinkedList *lp, DataType *dataPtr)
 {
+	lp->cur = makeNode(dataPtr, lp->head, lp->head->next);
+	lp->length++;
+	/*
 	lp->cur = (Node *)malloc(sizeof(Node));
 	assert(lp->cur != NULL);
 
@@ -62,7 +76,7 @@ Node * appendFromHead(LinkedList *lp, DataType *dataPtr)
 
 	lp->cur->data = *dataPtr;
 	lp->length++;
-
+	*/
 	return lp->cur;
 }
 
@@ -74,6 +88,9 @@ dataPtr - 새 노드에 저장할 데이터 영역의 주소
 --------------------------------------------------------------------------------------*/
 Node * appendFromTail(LinkedList *lp, DataType *dataPtr)
 {
+	lp->cur = makeNode(dataPtr, lp->tail->prev, lp->tail);
+	lp->length++;
+	/*
 	lp->cur = (Node *)malloc(sizeof(Node));
 	assert(lp->cur != NULL);
 
@@ -86,7 +103,7 @@ Node * appendFromTail(LinkedList *lp, DataType *dataPtr)
 	
 	lp->cur->data = *dataPtr;
 	lp->length++;
-
+	*/
 	return lp->cur;
 }
 

@@ -21,5 +21,5 @@ parm *pData : array words to print
 ----------------------------------------------------------------------------------*/
 void printWord(DataType *pData)
 {
-	printf(" %s ", pData->words);
+	printf(" %s /", pData->words);
 }

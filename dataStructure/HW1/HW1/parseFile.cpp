@@ -29,6 +29,7 @@ void dataFileLoad(LinkedList *lp)
 	fp = openFile();
 
 	while (fgets(wordBuf, FILE_WORD_BUF_SIZE, fp)) {
+		wordBuf[strlen(wordBuf) - 1] = NULL;
 		strcpy(addData.words, wordBuf);
 		appendFromTail(lp, &addData);
 	}

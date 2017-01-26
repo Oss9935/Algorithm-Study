@@ -1,0 +1,4 @@
+﻿  quickSort.cpp
+c:\users\b.b.kim\desktop\pm\datastructure_algorithm\algorithm\quicksort\quicksort\quicksort.cpp(23): warning C4101: 'temp' :참조되지 않은 지역 변수입니다.
+  quickSort.vcxproj -> C:\Users\B.B.KIM\Desktop\PM\dataStructure_Algorithm\algorithm\quickSort\Debug\quickSort.exe
+  quickSort.vcxproj -> C:\Users\B.B.KIM\Desktop\PM\dataStructure_Algorithm\algorithm\quickSort\Debug\quickSort.pdb (Full PDB)

@@ -1,0 +1,11 @@
+﻿  queue_testMain.cpp
+c:\users\b.b.kim\desktop\pm\datastructure_algorithm\datastructure\listqueue\listqueue\queue_testmain.cpp(55): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1270): note: 'scanf' 선언을 참조하십시오.
+c:\users\b.b.kim\desktop\pm\datastructure_algorithm\datastructure\listqueue\listqueue\queue_testmain.cpp(75): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1270): note: 'scanf' 선언을 참조하십시오.
+c:\users\b.b.kim\desktop\pm\datastructure_algorithm\datastructure\listqueue\listqueue\queue_testmain.cpp(104): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1270): note: 'scanf' 선언을 참조하십시오.
+  listQueue.cpp
+  코드를 생성하고 있습니다...
+  listQueue.vcxproj -> C:\Users\B.B.KIM\Desktop\PM\dataStructure_Algorithm\dataStructure\listQueue\Debug\listQueue.exe
+  listQueue.vcxproj -> C:\Users\B.B.KIM\Desktop\PM\dataStructure_Algorithm\dataStructure\listQueue\Debug\listQueue.pdb (Full PDB)

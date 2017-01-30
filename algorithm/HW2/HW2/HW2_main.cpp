@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "doubleLinkedList.h"
+//#include <crtdbg.h>>
 
 int fileDataToList(char *fileName, LinkedList *lp);
 FILE * openFile(char *fileName, char *mode);
@@ -25,6 +26,7 @@ int main()
 	patternCheck(&dataList, patternLen, fileCnt);
 
 	destroy(&dataList);
+	//_CrtDumpMemoryLeaks();
 	return 0;
 }
 

@@ -164,71 +164,69 @@ compare - data영역 비교를 위한 보조함수의 시작주소
 ---------------------------------------------------------------------------------------*/
 Node * deleteNode(Tree *tr, DataType *data, int(*compare)(DataType *, DataType *))
 {
-	Node *parent = tr->root;
-	Node *cur = tr->root;	// 삭제할 노드의 시작주소 포인터 변수
-	Node *son, *beforeSon;
-	Node *temp;
+	Node *parent = tr->root;	// 삭제할 노드의 부모노드
+	Node *deleteNode = tr->root;	// 삭제할 노드의 시작주소
+	Node *son;	// 노드 삭제 후 부모노드와 연결 관계 맺어 줄 노드
+	Node *parentSon;
 	
 	// 삭제할 노드와 삭제할 노드의 부모노드 시작주소 찾기
-	while (cur != NULL)
+	while (deleteNode != NULL)
 	{
-		if (compare(&cur->data, data) == 0)
+		if (compare(&deleteNode->data, data) == 0)	//탐색 성공
 			break;
 
-		parent = cur;	//현재 노드의 부모값 저장
-		if (compare(&cur->data, data) > 0)
-			cur = cur->left;
-		else //compare(&cur->data, data) < 0
-			cur = cur->right;
+		parent = deleteNode;	//현재 노드의 부모값 저장
+		if (compare(&deleteNode->data, data) > 0)	//현재 트리에서 검색한 data > serch data
+			deleteNode = deleteNode->left;
+		else //현재 트리에서 검색한 data < serch data
+			deleteNode = deleteNode->right;
 	}
-	if (cur == NULL)	//못찾은 경우 실패 리턴
+	if (deleteNode == NULL)	//못찾은 경우 실패 리턴
 		return NULL;
 
 
-	// 삭제될 노드 대신 자식(son) 역할을 할 노드를 위치시킴
+	
 	// 유형1 : 삭제할 노드의 오른쪽 자식이 없는 경우-삭제할 노드의 왼쪽 자식이 son역할
-	if (cur->right == NULL)
-		temp = cur->left;
-		//parent->right = cur->left;
+	if (deleteNode->right == NULL)
+		son = deleteNode->left;
 
 	// 유형2 : 삭제할 노드의 오른쪽 자식의 왼쪽 자식이 없는 경우-삭제할 노드의 오른쪽 자식이 son역할
-	else if (cur->right->left == NULL)
+	else if (deleteNode->right->left == NULL)
 	{
-		cur->right->left = cur->left;
-		/*
-		if (compare(&cur->data, &parent->data) > 0)	//부모노드의 오른쪽 노드에 삽입
-			parent->right = cur->right;
-		else// 부모노드의 왼쪽 노드에 삽입
-			parent->left = cur->right;
-		*/
+		son = deleteNode->right;
+		son->left = deleteNode->left;
 	}
 
-	// 유형3 : 그외 모든 경우-삭제한 노드의 오른쪽 서브트리에서 삭제할 데이터와 가장 가까운 값을 찾음
+	// 유형3 : 그외 모든 경우-삭제할 노드의 오른쪽 서브트리에서 삭제할 데이터와 가장 가까운 값을 찾음
 	else
 	{
-		// 삭제할 데이터와 가장 가까운 값 검색
-		son = tr->root->right;
+		// 부모노드 저장하면서 삭제할 데이터와 가장 가까운 값 검색
+		son = deleteNode->right;
 		while (son->left != NULL)
 		{
-			beforeSon = son;
+			parentSon = son;
 			son = son->left;
 		}
 
-		beforeSon->left = son->right;
-		son->left = cur->left;
-		son->right = cur->right;
-
-		//루트 노드를 삭제하는 경우
-		if (parent == cur)
-			tr->root = son;
+		parentSon->left = son->right;
+		son->left = deleteNode->left;
+		son->right = deleteNode->right;
+	}
+		
+	/*	삭제될 노드 대신 자식(son) 역할을 할 노드를 위치시킴	*/
+	// 루트 노드를 삭제하는 경우
+	if (parent == deleteNode)
+	{
+		tr->root = son;
+		return parent;
 	}
 
-	if (compare(&cur->data, &parent->data) > 0)	//부모노드의 오른쪽 노드에 삽입
-		parent->right = cur->right;
+	if (compare(&deleteNode->data, &parent->data) > 0)	//부모노드의 오른쪽 노드에 삽입
+		parent->right = son;
 	else// 부모노드의 왼쪽 노드에 삽입
-		parent->left = cur->right;
+		parent->left = son;
 
-	free(cur);
+	free(deleteNode);
 	tr->nodeCnt--;
 
 	return parent;

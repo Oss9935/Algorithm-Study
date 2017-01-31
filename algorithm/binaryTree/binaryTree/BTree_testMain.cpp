@@ -52,7 +52,8 @@ int main()
 	else printf("%d 못찾음!!\n\n", searchData);
 
 	// 노드 삭제
-	for (int i = 0; i < myTree.nodeCnt; i++)
+	puts("-------------------------------------");
+	for (int i = 0; i < arySize; i++)
 	{
 		resp = deleteNode(&myTree, ary + i, compareInt);
 		if (resp != NULL)
@@ -62,8 +63,8 @@ int main()
 		printf("\n삭제후의 tree내의 자료 출력 : ");
 		inorderTraverse(myTree.root, printInt);
 		printf("\n\n");
-
 	}
+	puts("-------------------------------------");
 	/*
 	printf("Node 삭제...\n");
 	deleteData = 7;

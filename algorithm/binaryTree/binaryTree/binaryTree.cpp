@@ -78,7 +78,7 @@ Node *addNode(Tree *tr, DataType *data, int(*compare)(DataType *, DataType *))
 		}
 		else { ; }
 	}
-	
+	tr->nodeCnt++;
 
 	return newNode;
 }
@@ -164,16 +164,74 @@ compare - data영역 비교를 위한 보조함수의 시작주소
 ---------------------------------------------------------------------------------------*/
 Node * deleteNode(Tree *tr, DataType *data, int(*compare)(DataType *, DataType *))
 {
-	// TODO	
+	Node *parent = tr->root;
+	Node *cur = tr->root;	// 삭제할 노드의 시작주소 포인터 변수
+	Node *son, *beforeSon;
+	Node *temp;
+	
+	// 삭제할 노드와 삭제할 노드의 부모노드 시작주소 찾기
+	while (cur != NULL)
+	{
+		if (compare(&cur->data, data) == 0)
+			break;
 
-	// 유형1 : 삭제할 노드의 오른쪽 자식이 없는 경우-삭제할 노드의 왼쪽 자식이 son역할
+		parent = cur;	//현재 노드의 부모값 저장
+		if (compare(&cur->data, data) > 0)
+			cur = cur->left;
+		else //compare(&cur->data, data) < 0
+			cur = cur->right;
+	}
+	if (cur == NULL)	//못찾은 경우 실패 리턴
+		return NULL;
 
-	// 유형2 : 삭제할 노드의 오른쪽 자식의 왼쪽 자식이 없는 경우-삭제할 노드의 오른쪽 자식이 son역할
-
-	// 유형3 : 그외 모든 경우-삭제한 노드의 오른쪽 서브트리에서 삭제할 데이터와 가장 가까운 값을 찾음
 
 	// 삭제될 노드 대신 자식(son) 역할을 할 노드를 위치시킴
-	return NULL;
+	// 유형1 : 삭제할 노드의 오른쪽 자식이 없는 경우-삭제할 노드의 왼쪽 자식이 son역할
+	if (cur->right == NULL)
+		temp = cur->left;
+		//parent->right = cur->left;
+
+	// 유형2 : 삭제할 노드의 오른쪽 자식의 왼쪽 자식이 없는 경우-삭제할 노드의 오른쪽 자식이 son역할
+	else if (cur->right->left == NULL)
+	{
+		cur->right->left = cur->left;
+		/*
+		if (compare(&cur->data, &parent->data) > 0)	//부모노드의 오른쪽 노드에 삽입
+			parent->right = cur->right;
+		else// 부모노드의 왼쪽 노드에 삽입
+			parent->left = cur->right;
+		*/
+	}
+
+	// 유형3 : 그외 모든 경우-삭제한 노드의 오른쪽 서브트리에서 삭제할 데이터와 가장 가까운 값을 찾음
+	else
+	{
+		// 삭제할 데이터와 가장 가까운 값 검색
+		son = tr->root->right;
+		while (son->left != NULL)
+		{
+			beforeSon = son;
+			son = son->left;
+		}
+
+		beforeSon->left = son->right;
+		son->left = cur->left;
+		son->right = cur->right;
+
+		//루트 노드를 삭제하는 경우
+		if (parent == cur)
+			tr->root = son;
+	}
+
+	if (compare(&cur->data, &parent->data) > 0)	//부모노드의 오른쪽 노드에 삽입
+		parent->right = cur->right;
+	else// 부모노드의 왼쪽 노드에 삽입
+		parent->left = cur->right;
+
+	free(cur);
+	tr->nodeCnt--;
+
+	return parent;
 }
 /* --------------------------------------------------------------------------------------
 함수명 : destroyTree - tree 내의 모든 노드 삭제(tree 소멸)

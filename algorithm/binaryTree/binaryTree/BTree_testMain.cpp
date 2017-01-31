@@ -52,6 +52,19 @@ int main()
 	else printf("%d 못찾음!!\n\n", searchData);
 
 	// 노드 삭제
+	for (int i = 0; i < myTree.nodeCnt; i++)
+	{
+		resp = deleteNode(&myTree, ary + i, compareInt);
+		if (resp != NULL)
+			printf("%d 삭제성공!\n", ary[i]);
+		else
+			printf("%d 삭제 실패!!\n", ary[i]);
+		printf("\n삭제후의 tree내의 자료 출력 : ");
+		inorderTraverse(myTree.root, printInt);
+		printf("\n\n");
+
+	}
+	/*
 	printf("Node 삭제...\n");
 	deleteData = 7;
 	resp = deleteNode(&myTree, &deleteData, compareInt); // 유형1 : 삭제할 노드의 오른쪽 자식이 없는 경우
@@ -59,6 +72,10 @@ int main()
 		printf("%d 삭제성공!\n", deleteData);
 	else
 		printf("%d 삭제 실패!!\n", deleteData);
+	printf("\n삭제후의 tree내의 자료 출력 : ");
+	inorderTraverse(myTree.root, printInt);
+	printf("\n\n");
+
 
 	deleteData = 18;
 	resp = deleteNode(&myTree, &deleteData, compareInt); // 유형2 : 삭제할 노드의 오른쪽 자식의 왼쪽 자식이 없는 경우
@@ -66,6 +83,10 @@ int main()
 		printf("%d 삭제성공!\n", deleteData);
 	else
 		printf("%d 삭제 실패!!\n", deleteData);
+	printf("\n삭제후의 tree내의 자료 출력 : ");
+	inorderTraverse(myTree.root, printInt);
+	printf("\n\n");
+
 
 	deleteData = 14;
 	resp = deleteNode(&myTree, &deleteData, compareInt); // 유형3 : 그외 모든 경우
@@ -73,6 +94,10 @@ int main()
 		printf("%d 삭제성공!\n", deleteData);
 	else
 		printf("%d 삭제 실패!!\n", deleteData);
+	printf("\n삭제후의 tree내의 자료 출력 : ");
+	inorderTraverse(myTree.root, printInt);
+	printf("\n\n");
+	*/
 
 	deleteData = 123;
 	resp = deleteNode(&myTree, &deleteData, compareInt); // 없는 데이터일 경우
@@ -80,7 +105,7 @@ int main()
 		printf("%d 삭제성공!\n", deleteData);
 	else
 		printf("%d 삭제 실패!!\n", deleteData);
-
+	
 	printf("\n삭제후의 tree내의 자료 출력 : ");
 	inorderTraverse(myTree.root, printInt);
 	printf("\n\n");

@@ -34,8 +34,8 @@ int enqueue(Queue * qPtr, DataType inData)
 	qPtr->queue[qPtr->rear] = inData;
 	qPtr->rear++;
 	qPtr->rear = (qPtr->rear) % qPtr->qSize;
-	return TRUE;
 
+	return TRUE;
 }
 /*--------------------------------------------------------------------------------------
 함수명 및 기능 : dequeue() - 큐에서 데이터 하나를 꺼냄

@@ -1,6 +1,6 @@
 #pragma once
 enum { FALSE, TRUE };
-
+enum {NON_VISIT, VISIT};
 typedef  int DataType;     // 노드내의 데이터 영역의 형명 재지정 
 
 //-------------------------------------

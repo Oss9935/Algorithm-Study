@@ -1,6 +1,7 @@
-#include<stdio.h>
-#include<assert.h>
-#include<malloc.h>
+#include <stdio.h>
+#include <memory.h>
+#include <assert.h>
+#include <malloc.h>
 #include "graph.h"
 #include "stack.h"
 #include "queue.h"
@@ -69,8 +70,12 @@ void outputGraph(GraphMatrix *gm)
 void DFS_Matrix(GraphMatrix *gm)
 {
 	int i;
-	for (i = 0; i < gm->vertexCnt; ++i)  /* 정점의 방문상태 정보를 저장할 check배열 초기화 */
+
+	// 정점의 방문상태 정보를 저장할 check배열 초기화 
+	for (i = 0; i < gm->vertexCnt; ++i)  
 		check[i] = 0;
+
+	// 그래프의 하나의 노드를 기준으로 연결된 모든 노드 방문 반복
 	for (i = 0; i < gm->vertexCnt; ++i)
 		if (check[i] == 0)
 			DFS_recursive(gm, i);
@@ -85,8 +90,12 @@ vNum : 방문하고자 하는 정점 번호
 --------------------------------------------------------------------------------------*/
 void DFS_recursive(GraphMatrix *gm, int vNum)
 {
-
-	// TODO
+	int i;
+	visit(vNum);
+	check[vNum] = VISIT;
+	for(i = 0; i< gm->vertexCnt; i++)
+		if (check[i] == NON_VISIT && gm->graph[vNum][i] == 1)
+			DFS_recursive(gm, i);
 }
 /*--------------------------------------------------------------------------------------
 함수명 및 기능: visit() - 방문된 정점을 처리하는 함수(이 함수에서는 방문된 정점을 출력 함)
@@ -105,8 +114,55 @@ void visit(int vNum)
 --------------------------------------------------------------------------------------*/
 void nrDFS_Matrix(GraphMatrix *gm)
 {
+	Stack stk;	/* 특정 노드부터 DFS를 이용해 탐색을 할 때 한 노드에 대한 
+				여러 인접 노드 중 임의의 한 노드에 대해 먼저 탐색하기 위해
+				나머지 노드들을 스택에 push하고 처리중인 노드의 탐색이 끝나면
+				방문하기 위해 탐색중에 나중에 방문해야 할 노드를 임의로 담아 둘
+				자료구조 필요. DFS는 한 노드에서 탐색할 수 있는 모든 노드를 탐색한 후
+				나머지 노드들에 대해 탐색하기 때문에 향후 방문할 노드 정보를
+				역순으로 저장할 자료구조가 필요하기 때문에 stack자료구조 사용.
+				*/
+	int i, j = 0;
+	DataType curNode;	// 현재 방문중인 노드(stack에서 pop한 값)
 
-	// TODO
+	initStack(&stk);
+
+	// 방문 상태 확인 전역변수 비방문 상태로 초기화
+	for (i = 0; i < gm->vertexCnt; i++)
+		check[i] = NON_VISIT;
+	
+	// 그래프의 노드 중 특정 노드기준으로 모든 노드 탐색 완료 시까지 반복
+	for (i = 0; i < gm->vertexCnt; i++)
+	{
+		// 이미 탐색하지 않은 노드의 경우만 탐색 수행
+		if (check[i] == NON_VISIT)
+		{
+			// 현재 노드 스택에 push 후 해당 노드 탐색 완료 상태로 변경
+			push(&stk, i);	
+			check[i] = VISIT;
+			
+			// 스택에 탐색할 노드가 없을 때 까지 반복 수행.
+			while (!isStackEmpty(&stk))
+			{
+				// 현재 노드를 pop 하고 방문 처리
+				pop(&stk, &curNode);
+				visit(curNode);
+
+				// pop한 노드의 인접노드(연결요소) 스택에 push.
+				// 단, 방문하지 않는 노드만 push
+				for (j = 0; j < gm->vertexCnt; j++)
+					if (gm->graph[curNode][j] != 0 && check[j] == NON_VISIT)
+					{
+						// 스택에 들어간 적 없는 정점(방문X)이라면 스택에 push
+						push(&stk, j);
+						check[j] = VISIT;
+					}
+			}
+		}
+	}
+	NEWL;
+	destroyStack(&stk);
+
 	return;
 }
 /*--------------------------------------------------------------------------------------
@@ -117,8 +173,47 @@ void nrDFS_Matrix(GraphMatrix *gm)
 --------------------------------------------------------------------------------------*/
 void BFS_Matrix(GraphMatrix *gm)
 {
+	Queue que;
+	int i, j;
+	DataType curNode;	// 현재 방문중인 노드(queue에서 dequeue 한 값)
 
-	// TODO
+	initQueue(&que, MAX_VERTEX);
+
+	// 방문 상태 확인 전역변수를 비방문 상태로 초기화
+	for (i = 0; i < gm->vertexCnt; i++)
+		check[i] = NON_VISIT;
+
+	// 그래프의 특정 노드를 기준노드로 탐색 반복하여 모든 노드 탐색 완료시 까지 반복
+	for (i = 0; i < gm->vertexCnt; i++)
+	{
+		// 이미 탐색하지 않은 경우만 탐색 수행
+		if (check[i] == VISIT)
+			continue;
+
+		/*	이전까지 탐색되지 않는 기준 노드 탐색 처리 과정	*/
+		// 현재 노드를 enqueue하고 방문 처리
+		enqueue(&que, i);
+		check[i] = VISIT;
+
+		while (!isQueueEmpty(&que))
+		{
+			// 현재 노드를 dequeue 하고 방문 처리
+			dequeue(&que, &curNode);
+			visit(curNode);
+
+			// 현재 노드와 인접해있는 노드들을 enqueue.
+			// 단, 방문하지 않는 노드만
+			for(j=0; j < gm->vertexCnt; j++)
+				if (check[j] == NON_VISIT && gm->graph[curNode][j] != 0)
+				{
+					enqueue(&que, j);
+					check[j] = VISIT;
+				}
+		}
+	}
+	NEWL;
+	destroyQueue(&que);
+
 	return;
 }
 /*--------------------------------------------------------------------------------------
@@ -130,8 +225,21 @@ void BFS_Matrix(GraphMatrix *gm)
 int countGraphComponents(GraphMatrix *gm)
 {
 	int componetsCount = 0;  /* 그래프 내의 연결 요소 카운트 변수 */
+	int i;
 
-						// TODO
+	// 정점의 방문상태 정보를 저장할 check배열 초기화 
+	for (i = 0; i < gm->vertexCnt; ++i)
+		check[i] = 0;
+
+	// 그래프의 하나의 노드를 기준으로 연결된 모든 노드 방문 반복
+	for (i = 0; i < gm->vertexCnt; ++i)
+		if (check[i] == 0)
+		{
+			printf("연결 요소 %d : ", ++componetsCount);
+			DFS_recursive(gm, i);
+			NEWL;
+		}
+
 	return componetsCount;
 }
 /*--------------------------------------------------------------------------------------
@@ -192,11 +300,6 @@ void outputGraph_List(GraphList *g)
 {
 	int linkCnt = 0;	//그래프의 연결 요소 갯수 저장
 	Node *cur;
-
-	puts("----------------------------------");
-	puts("그래프 내의 연결 요소 보기");
-	puts("----------------------------------");
-	NEWL;
 
 	for (int i = 0; i < g->vertexCnt; i++)
 	{

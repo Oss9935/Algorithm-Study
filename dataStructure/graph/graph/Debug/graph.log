@@ -1,4 +1,7 @@
-﻿  testmain.cpp
-c:\users\b.b.kim\desktop\pm\datastructure_algorithm\datastructure\graph\graph\testmain.cpp(11): warning C4101: 'compCount' :참조되지 않은 지역 변수입니다.
+﻿  graph.cpp
+c:\users\b.b.kim\desktop\pm\datastructure_algorithm\datastructure\graph\graph\graph.cpp(20): warning C4101: 'k' :참조되지 않은 지역 변수입니다.
+c:\users\b.b.kim\desktop\pm\datastructure_algorithm\datastructure\graph\graph\graph.cpp(255): warning C4101: 'k' :참조되지 않은 지역 변수입니다.
+c:\users\b.b.kim\desktop\pm\datastructure_algorithm\datastructure\graph\graph\graph.cpp(255): warning C4101: 'j' :참조되지 않은 지역 변수입니다.
+c:\users\b.b.kim\desktop\pm\datastructure_algorithm\datastructure\graph\graph\graph.cpp(283): warning C4101: 'i' :참조되지 않은 지역 변수입니다.
   graph.vcxproj -> C:\Users\B.B.KIM\Desktop\PM\dataStructure_Algorithm\dataStructure\graph\Debug\graph.exe
   graph.vcxproj -> C:\Users\B.B.KIM\Desktop\PM\dataStructure_Algorithm\dataStructure\graph\Debug\graph.pdb (Full PDB)
